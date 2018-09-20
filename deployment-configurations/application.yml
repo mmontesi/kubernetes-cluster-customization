@@ -1,0 +1,73 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: <application name>
+  namespace: <namespace name>
+spec:
+  revisionHistoryLimit: 5
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: <application name>
+      annotations:
+        kubernetes.io/change-cause: __CHANGE_CAUSE__
+    spec:
+      containers:
+      - name: <application name>
+        image: <azure container registry>.azurecr.io/<application name>
+        imagePullPolicy: Always
+        readinessProbe:
+          httpGet:
+            path: /
+            scheme: HTTP
+            port: 80
+        livenessProbe:
+          httpGet:
+            path: /
+            scheme: HTTP
+            port: 80
+          initialDelaySeconds: 25
+          timeoutSeconds: 5
+        env:
+        - name: ENV
+          value: "env"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: <application name>
+  namespace: <namespace name>
+spec:
+  ports:
+  - name: http
+    targetPort: 80
+    port: 80
+  selector:
+    app: <application name>
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: <application name>
+  namespace: <namespace name>
+  annotations:
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-methods: "PUT, GET, POST, OPTIONS"
+    nginx.ingress.kubernetes.io/cors-allow-origin: "*"
+    nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+spec:
+  tls:
+  - hosts:
+    - <application name>.mydomain.local
+    secretName: <certificate secret name>
+  rules:
+  - host: <application name>.mydomain.local
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: <application name>
+          servicePort: http
