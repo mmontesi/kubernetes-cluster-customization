@@ -49,4 +49,4 @@ spec:
         - /nginx-ingress-controller
         - --default-backend-service=$(POD_NAMESPACE)/nginx-default-backend
         - --configmap=$(POD_NAMESPACE)/nginx-configuration
-        - --default-ssl-certificate=kube-system/agyo.io
+        - --default-ssl-certificate=kube-system/<certificate secret name>
