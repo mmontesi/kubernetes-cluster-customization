@@ -36,4 +36,4 @@ kubectl apply -n <namespace name> --context=<k8s context name> -f deployment-con
 ```
 
 # Compatibility 
-This configuration was tested on Azure Kubernetes Services with K8s version 1.11.1
+This configuration was tested on Azure Kubernetes Services with K8s version 1.13.10
