@@ -16,6 +16,7 @@ spec:
         k8s-app: nginx-ingress-controller
     spec:
       terminationGracePeriodSeconds: 60
+      serviceAccountName: nginx-ingress
       containers:
       - image: quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.18.0
         name: nginx-ingress-controller
