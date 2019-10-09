@@ -21,6 +21,8 @@ kubectl create secret tls <certificate secret name> --namespace=kube-system --ke
 Check to use the latest controller version, in nginx-ingress-controller-deployment.yml, and custom configuration to pass through a ConfigMap, nginx-custom-config.yml
 
 ```bash
+kubectl apply -n kube-system -f ingress/serviceaccount.yml --context=<k8s context name>
+kubectl apply -n kube-system -f ingress/rbac.yml --context=<k8s context name>
 kubectl apply -n kube-system -f ingress/default-backend-deployment.yml --context=<k8s context name>
 kubectl apply -n kube-system -f ingress/default-backend-service.yml --context=<k8s context name>
 kubectl apply -n kube-system -f ingress/nginx-ingress-controller-deployment.yml --context=<k8s context name>
